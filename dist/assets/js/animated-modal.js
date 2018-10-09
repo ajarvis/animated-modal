@@ -8,6 +8,15 @@ function openModal(element) {
   modalTarget.classList.remove("slide-out-top"); // remove any applied exit animations
   modalTarget.classList.add("is-active", "slide-in-top"); // add intro animation and show modal
   modalBackdrop.style.display = "block"; // show the backdrop
+
+  // Close modal when window is clicked
+  window.onclick = function (event) {
+    if (event.target == modalTarget) {
+      closeModal(modalTarget)
+      console.log("clicked outside modal target");
+    }
+  }
+
 }
 
 
