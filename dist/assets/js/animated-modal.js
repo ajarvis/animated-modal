@@ -42,16 +42,15 @@ function closeModal(element, event) {
   var event = event;
   var modalBackdrop = document.getElementById('modal-backdrop');
 
-  if (element) {
+  if (element) { // if element parameter was passed, set the modalTarget to this
     var modalTarget = element;
-  } else {
-    var modalTarget = this.getClosest(event.target, ".c-modal");
+  } else { // otherwise, just find the closest modal and target it
+    var modalTarget = this.getClosest(event.target, ".modal");
   }
 
   modalTarget.classList.remove("slide-in-top");
   modalTarget.classList.add("slide-out-top");
   modalBackdrop.style.display = "none";
-  document.body.classList.remove('c-modal-open');
   
   // after delay, remove animation and is-active
   setTimeout(function () {
