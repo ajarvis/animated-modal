@@ -5,29 +5,46 @@ function openModal(element) {
   var modalTarget = document.getElementById(modalID); 
   var modalBackdrop = document.getElementById('modal-backdrop');
 
-  modalTarget.classList.remove("slide-out-top"); // remove any applied exit animations
-  modalTarget.classList.add("is-active", "slide-in-top"); // add intro animation and show modal
-  modalBackdrop.style.display = "block"; // show the backdrop
+  modalTarget.classList.remove("slide-out-top");
+  modalTarget.classList.add("is-active", "slide-in-top");
+  modalBackdrop.style.display = "block";
+
+  // after delay, remove intro animation
+  setTimeout(function () {
+    modalTarget.classList.remove("slide-in-top");
+  }, 300);
 
   // Close modal when window is clicked
   window.onclick = function (event) {
     if (event.target == modalTarget) {
       closeModal(modalTarget)
-      console.log("clicked outside modal target");
     }
   }
 
-}
+  // Close modal on escape keypress
+  document.onkeydown = function (event) {
+    event = event || window.event;
+    var isEscape = false;
+    if ("key" in event) {
+      isEscape = (event.key == "Escape" || event.key == "Esc");
+    } else {
+      isEscape = (event.keyCode == 27);
+    }
+    if (isEscape) {
+      closeModal(modalTarget);
+    }
+  };
 
+}
 
 // Close modal
 function closeModal(element, event) {
   var event = event;
   var modalBackdrop = document.getElementById('modal-backdrop');
 
-  if (element) { // if element parameter was passed, set the modalTarget to this
+  if (element) {
     var modalTarget = element;
-  } else { // otherwise, just find the closest modal and target it
+  } else {
     var modalTarget = this.getClosest(event.target, ".c-modal");
   }
 
@@ -36,8 +53,9 @@ function closeModal(element, event) {
   modalBackdrop.style.display = "none";
   document.body.classList.remove('c-modal-open');
   
+  // after delay, remove animation and is-active
   setTimeout(function () {
-    modalTarget.style.display = "none"; // hide modal after delay
+    modalTarget.classList.remove("slide-out-top", "is-active");
   }, 300);
 
 }
