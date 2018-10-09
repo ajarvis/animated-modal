@@ -7,3 +7,55 @@ website: http://www.adamcjarvis.com
 /* ==========================================================================
     Animations
 ========================================================================== */
+
+/**** Entrance: Slide-in-top ****/
+.slide-in-top {
+    -webkit-animation: slide-in-top 300ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-in-top 300ms cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }
+  @-webkit-keyframes slide-in-top {
+    0% {
+      transform: translateY(-200px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-200px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /**** Exit: Slide-out-top ****/
+  .slide-out-top {
+    -webkit-animation: slide-out-top 300ms cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: slide-out-top 300ms cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+  }
+  @-webkit-keyframes slide-out-top {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-200px);
+      opacity: 0;
+    }
+  }
+  @keyframes slide-out-top {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-200px);
+      opacity: 0;
+    }
+  }
