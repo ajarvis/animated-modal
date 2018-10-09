@@ -31,15 +31,14 @@
       <h1 class="title">Demos</h1>
       <h2 class="subtitle">ModalAnimations.js provides straightforward animations to open and close modals.</h2>
 
-      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Fade-In-Top</button>
+      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" data-modal="demo-1" onclick="openModal(this)">Fade-In-Top</button>
       <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Fade-In-Bottom</button>
       <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Bounce-In-Top</button>
       <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Bounce-In-Bottom</button>
     </div>
   </section>
 
-  <div class="modal">
-    <div class="modal-background"></div>
+  <div class="modal" id="demo-1">
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Modal title</p>
@@ -54,9 +53,9 @@
       </footer>
     </div>
   </div>
+  <div id="modal-backdrop" class="modal-background" style="display: none;"></div>
 
-  
+  <script src="assets/js/animated-modal.js"></script>
 
 </body>
-
 </html>
