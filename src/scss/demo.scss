@@ -1,0 +1,23 @@
+/* ==========================================================================
+  Import Bulma
+========================================================================== */
+@import "../../node_modules/bulma/bulma.sass";
+
+
+/* ==========================================================================
+  Spacing
+========================================================================== */
+$increments: (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100);
+$position: (top, bottom, left, right);
+
+@each $space in $increments {
+  @each $side in $position {
+    .m-#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
+    }
+
+    .p-#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
+    }
+  }
+}
