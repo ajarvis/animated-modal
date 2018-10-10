@@ -33,7 +33,14 @@
 
       <button
         class="button is-primary is-outlined is-medium m-r-15 m-b-15"
-        data-modal="demo-1"
+        data-modal="demo"
+        onclick="openModal(this)">
+        Slide-In-Top
+      </button>
+
+      <button
+        class="button is-primary is-outlined is-medium m-r-15 m-b-15"
+        data-modal="demo"
         data-modal-options='{
           "introAnimation": "bounce-in-top"
         }' onclick="openModal(this)">
@@ -43,11 +50,17 @@
       <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" disabled>Bounce-In-Bottom</button>
       <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" disabled>Fade-In-Bottom</button>
       <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" disabled>Fade-In-Top</button>
+
+      <br><br>
+
+      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" onclick="openModal(undefined, demo);">
+        Open without data-attr
+      </button>
       
     </div>
   </section>
 
-  <div class="modal" id="demo-1">
+  <div class="modal" id="demo">
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Modal title</p>
@@ -57,7 +70,7 @@
         <!-- Content ... -->
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" onclick="closeModal(this)" data-modal="demo-1">Save changes</button>
+        <button class="button is-success" onclick="closeModal(this)" data-modal="demo">Save changes</button>
         <button class="button">Cancel</button>
       </footer>
     </div>

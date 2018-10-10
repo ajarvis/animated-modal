@@ -1,24 +1,27 @@
-
-
 /**
  * DEFAULT OPTIONS
  */
 var defaults = ({
-  introAnimation: "bounce-in-bottom", 
-  exitAnimation: "slide-out-bottom",
+  introAnimation: "slide-in-top", 
+  exitAnimation: "slide-out-top",
   activeClass: "is-active",
   closeOnOutsideClick: true,
   closeOnEscape: true,
-  
 });
 
-
 // Open modal based on data-modal attribute
-function openModal(element) {
+function openModal(element, id) {
 
   // Set element targets based on data-modal attribute
-  var modalID = element.getAttribute('data-modal');
-  var modalTarget = document.getElementById(modalID); 
+  if (id) {
+    var modalTarget = id;
+    
+  } else {
+    var modalID = element.getAttribute('data-modal');
+    var modalTarget = document.getElementById(modalID); 
+    
+  }
+  
   var modalBackdrop = document.getElementById('modal-backdrop'); 
 
   // Get and set options from the data-modal-options attribute
@@ -35,7 +38,11 @@ function openModal(element) {
   if (settings.closeOnOutsideClick == true) {
     window.onclick = function (event) {
       if (event.target == modalTarget) {
-        closeModal(element)
+        if (id) {
+          closeModal(element, id);
+        } else {
+          closeModal(element)
+        }
       }
     }
   }
@@ -51,7 +58,11 @@ function openModal(element) {
         isEscape = (event.keyCode == 27);
       }
       if (isEscape) {
-        closeModal(element);
+        if (id) {
+          closeModal(element, id);
+        } else {
+          closeModal(element)
+        }
       }
     };
   }
@@ -64,19 +75,22 @@ function openModal(element) {
     modalTarget.classList.remove(settings.introAnimation);
     modalTarget.classList.add(settings.activeClass);
   }
-
 }
 
 
 // Closes the modal when passed an element id through data-attribute
 // Expects the use for `data-modal="id"` where id is the modal target
-function closeModal(element) {
+function closeModal(element, id) {
 
-  // Retrieves modal ID from data-modal attribute
-  var modalID = element.getAttribute('data-modal');
+  // Set element targets based on data-modal attribute
+  if (id) {
+    var modalTarget = id; 
+  } else {
+    var modalID = element.getAttribute('data-modal');
+    var modalTarget = document.getElementById(modalID);
+  }
 
   // Sets variables for target elements
-  var modalTarget = document.getElementById(modalID);
   var modalBackdrop = document.getElementById('modal-backdrop');
 
   // Get and set options from the data-modal-options attribute
