@@ -1,86 +1,153 @@
+
+
+/**
+ * DEFAULT OPTIONS
+ */
+var defaults = ({
+  introAnimation: "bounce-in-bottom", 
+  exitAnimation: "slide-out-bottom",
+  activeClass: "is-active",
+  closeOnOutsideClick: true,
+  closeOnEscape: true,
+  
+});
+
+
 // Open modal based on data-modal attribute
 function openModal(element) {
 
-  var modalID = element.getAttribute('data-modal');  // Get modal data attribute from clicked button
+  // Set element targets based on data-modal attribute
+  var modalID = element.getAttribute('data-modal');
   var modalTarget = document.getElementById(modalID); 
-  var modalBackdrop = document.getElementById('modal-backdrop');
+  var modalBackdrop = document.getElementById('modal-backdrop'); 
 
-  modalTarget.classList.remove("slide-out-top");
-  modalTarget.classList.add("is-active", "slide-in-top");
-  modalBackdrop.style.display = "block";
+  // Get and set options from the data-modal-options attribute
+  var options = getDataOptions(element ? element.getAttribute('data-modal-options') : null);
 
-  // after delay, remove intro animation
-  setTimeout(function () {
-    modalTarget.classList.remove("slide-in-top");
-  }, 300);
+  // Merge user options with defaults
+  var settings = mergeOptions(defaults, options);
 
-  // Close modal when window is clicked
-  window.onclick = function (event) {
-    if (event.target == modalTarget) {
-      closeModal(modalTarget)
+  // Show the modal, backdrop, and apply animation
+  modalTarget.classList.add(settings.introAnimation, settings.activeClass);
+  modalBackdrop.style.display = 'block';
+
+  // Close modal when clicking outside of the modal
+  if (settings.closeOnOutsideClick == true) {
+    window.onclick = function (event) {
+      if (event.target == modalTarget) {
+        closeModal(element)
+      }
     }
   }
 
-  // Close modal on escape keypress
-  document.onkeydown = function (event) {
-    event = event || window.event;
-    var isEscape = false;
-    if ("key" in event) {
-      isEscape = (event.key == "Escape" || event.key == "Esc");
-    } else {
-      isEscape = (event.keyCode == 27);
+  // Close modal on escape key press
+  if (settings.closeOnEscape == true) {
+    document.onkeydown = function (event) {
+      event = event || window.event;
+      var isEscape = false;
+      if ('key' in event) {
+        isEscape = (event.key == 'Escape' || event.key == 'Esc');
+      } else {
+        isEscape = (event.keyCode == 27);
+      }
+      if (isEscape) {
+        closeModal(element);
+      }
+    };
+  }
+
+  // Check for animation end and call introAnimationCompleted() function when animations stop
+  checkForAnimationEnd(modalTarget, "AnimationEnd", introAnimationCompleted);
+
+  // Remove exit animation classes and show the modal
+  function introAnimationCompleted() {
+    modalTarget.classList.remove(settings.introAnimation);
+    modalTarget.classList.add(settings.activeClass);
+  }
+
+}
+
+
+// Closes the modal when passed an element id through data-attribute
+// Expects the use for `data-modal="id"` where id is the modal target
+function closeModal(element) {
+
+  // Retrieves modal ID from data-modal attribute
+  var modalID = element.getAttribute('data-modal');
+
+  // Sets variables for target elements
+  var modalTarget = document.getElementById(modalID);
+  var modalBackdrop = document.getElementById('modal-backdrop');
+
+  // Get and set options from the data-modal-options attribute
+  var options = getDataOptions(element ? element.getAttribute('data-modal-options') : null);
+
+  // Merge user options with defaults
+  var settings = mergeOptions(defaults, options);
+
+  // Run exit animation and hide the backdrop and enable page scrolling
+  modalTarget.classList.add(settings.exitAnimation);
+  modalBackdrop.style.display = 'none';
+
+  // Check for animation end and call exitAnimationCompleted() function when animations stop
+  checkForAnimationEnd(modalTarget, "AnimationEnd", exitAnimationCompleted);
+
+  // Remove exit animation classes and hide the modal
+  function exitAnimationCompleted() {
+    modalTarget.classList.remove(settings.exitAnimation, settings.activeClass);
+  }
+
+}
+
+
+  //
+	// Utility Functions
+	//
+
+  /**
+   * Merges two or more objects and returns a new object.
+   * mergeOptions(object, object) - Returns merged oject
+   */
+  function mergeOptions() {
+    var mergedOptions = {};
+
+    // Merge the object into the extended object (mergedOptions)
+    function merge(object) {
+      for (var prop in object) {
+        if (object.hasOwnProperty(prop)) {
+          mergedOptions[prop] = object[prop];
+        }
+      }
+    };
+
+    // Loop through each object and merge
+    for (var i = 0; i < arguments.length; i++) {
+      merge(arguments[i]);
     }
-    if (isEscape) {
-      closeModal(modalTarget);
-    }
+
+    return mergedOptions;
   };
 
-}
 
-// Close modal
-function closeModal(element, event) {
-  var event = event;
-  var modalBackdrop = document.getElementById('modal-backdrop');
+  /**
+   * Gets data options from data-modal-options attribute
+   * Converts options to an object
+   */
+  function getDataOptions(options) {
+    return (!options || typeof JSON.parse !== 'function') ? {} : JSON.parse(options);
+  };
 
-  if (element) { // if element parameter was passed, set the modalTarget to this
-    var modalTarget = element;
-  } else { // otherwise, just find the closest modal and target it
-    var modalTarget = this.getClosest(event.target, ".modal");
+
+  /**
+   * Check for animation end
+   * Loop through prefixes for browser animationend variations
+   * Add event listener on passed element
+   */
+  var prefix = ["webkit", "moz", "MS", "o", ""];
+
+  function checkForAnimationEnd(element, type, callback) {
+    for (var p = 0; p < prefix.length; p++) {
+      if (!prefix[p]) type = type.toLowerCase();
+      element.addEventListener(prefix[p]+type, callback, false);
+    }
   }
-
-  modalTarget.classList.remove("slide-in-top");
-  modalTarget.classList.add("slide-out-top");
-  modalBackdrop.style.display = "none";
-  
-  // after delay, remove animation and is-active
-  setTimeout(function () {
-    modalTarget.classList.remove("slide-out-top", "is-active");
-  }, 300);
-
-}
-
-// Find the closest element by given selector
-var getClosest = function (elem, selector) {
-
-  // Element.matches() polyfill
-  if (!Element.prototype.matches) {
-    Element.prototype.matches =
-      Element.prototype.matchesSelector ||
-      Element.prototype.mozMatchesSelector ||
-      Element.prototype.msMatchesSelector ||
-      Element.prototype.oMatchesSelector ||
-      Element.prototype.webkitMatchesSelector ||
-      function (s) {
-        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
-          i = matches.length;
-        while (--i >= 0 && matches.item(i) !== this) { }
-        return i > -1;
-      };
-  }
-
-  // Get closest matching element
-  for (; elem && elem !== document; elem = elem.parentNode) {
-    if (elem.matches(selector)) return elem;
-  }
-  return null;
-};

@@ -31,10 +31,19 @@
       <h1 class="title">Demos</h1>
       <h2 class="subtitle">ModalAnimations.js provides straightforward animations to open and close modals.</h2>
 
-      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" data-modal="demo-1" onclick="openModal(this)">Fade-In-Top</button>
-      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Fade-In-Bottom</button>
-      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Bounce-In-Top</button>
-      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15">Bounce-In-Bottom</button>
+      <button
+        class="button is-primary is-outlined is-medium m-r-15 m-b-15"
+        data-modal="demo-1"
+        data-modal-options='{
+          "introAnimation": "bounce-in-top"
+        }' onclick="openModal(this)">
+        Bounce-In-Top
+      </button>
+
+      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" disabled>Bounce-In-Bottom</button>
+      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" disabled>Fade-In-Bottom</button>
+      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" disabled>Fade-In-Top</button>
+      
     </div>
   </section>
 
@@ -48,7 +57,7 @@
         <!-- Content ... -->
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" onclick="closeModal(undefined, event)" data-modal="demo-1">Save changes</button>
+        <button class="button is-success" onclick="closeModal(this)" data-modal="demo-1">Save changes</button>
         <button class="button">Cancel</button>
       </footer>
     </div>
