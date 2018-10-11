@@ -7,6 +7,7 @@ var defaults = ({
   cancelAnimation: "slide-out-bottom",
   confirmAnimation: "slide-out-top",
   activeClass: "is-active",
+  backdropID: "modal-backdrop",
   closeOnOutsideClick: true,
   closeOnEscape: true,
 });
@@ -14,18 +15,16 @@ var defaults = ({
 // Open modal based on data-modal attribute
 function openModal(element, id) {
 
-  // Set element targets based on data-modal attribute
+  // Check if an ID was passed
+  // If so, target the modal element with that ID
   if (id) {
     var modalTarget = id;
-    
+  // Otherwise, get the ID from the data-attribute
   } else {
     var modalID = element.getAttribute('data-modal');
     var modalTarget = document.getElementById(modalID); 
-    
   }
   
-  var modalBackdrop = document.getElementById('modal-backdrop'); 
-
   // Get and set options from the data-modal-options attribute
   var options = getDataOptions(element ? element.getAttribute('data-modal-options') : null);
 
@@ -33,6 +32,8 @@ function openModal(element, id) {
   var settings = mergeOptions(defaults, options);
 
   // Show the modal, backdrop, and apply animation
+  var modalBackdrop = document.getElementById(settings.backdropID); 
+
   modalTarget.classList.add(settings.introAnimation, settings.activeClass);
   modalBackdrop.style.display = 'block';
 
