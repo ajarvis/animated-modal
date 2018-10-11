@@ -4,6 +4,8 @@
 var defaults = ({
   introAnimation: "slide-in-top", 
   exitAnimation: "slide-out-top",
+  cancelAnimation: "slide-out-bottom",
+  confirmAnimation: "slide-out-top",
   activeClass: "is-active",
   closeOnOutsideClick: true,
   closeOnEscape: true,
@@ -77,10 +79,20 @@ function openModal(element, id) {
   }
 }
 
+function cancelModal(element, id) {
+  var action = "cancel";
+  closeModal(element, id, action);
+}
+
+function confirmModal(element, id) {
+  var action = "confirm";
+  closeModal(element, id, action);
+}
+
 
 // Closes the modal when passed an element id through data-attribute
 // Expects the use for `data-modal="id"` where id is the modal target
-function closeModal(element, id) {
+function closeModal(element, id, action) {
 
   // Set element targets based on data-modal attribute
   if (id) {
@@ -99,8 +111,17 @@ function closeModal(element, id) {
   // Merge user options with defaults
   var settings = mergeOptions(defaults, options);
 
-  // Run exit animation and hide the backdrop and enable page scrolling
-  modalTarget.classList.add(settings.exitAnimation);
+  // Set the exit animation based on defaults or called functions
+  var exitAnimation = settings.exitAnimation;
+  // if cancelModal() called, apply cancel animation
+  if (action == "cancel") {
+    var exitAnimation = settings.cancelAnimation;
+  // if confirmModal() called, apply confirm animation
+  } else if (action == "confirm") {
+    var exitAnimation = settings.confirmAnimation;
+  }
+
+  modalTarget.classList.add(exitAnimation);
   modalBackdrop.style.display = 'none';
 
   // Check for animation end and call exitAnimationCompleted() function when animations stop
@@ -108,7 +129,7 @@ function closeModal(element, id) {
 
   // Remove exit animation classes and hide the modal
   function exitAnimationCompleted() {
-    modalTarget.classList.remove(settings.exitAnimation, settings.activeClass);
+    modalTarget.classList.remove(exitAnimation, settings.activeClass);
   }
 
 }
