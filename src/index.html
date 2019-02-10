@@ -53,7 +53,7 @@
 
       <br><br>
 
-      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" onclick="openModal(undefined, demo);">
+      <button class="button is-primary is-outlined is-medium m-r-15 m-b-15" id="demo-button">
         Open without data-attr
       </button>
       
@@ -78,6 +78,12 @@
   <div id="modal-backdrop" class="modal-background" style="display: none;"></div>
 
   <script src="assets/js/animated-modal.js"></script>
+
+  <script>
+    document.getElementById('demo-button').addEventListener('click', function () {
+      openModal(undefined, demo);
+    });
+  </script>
 
 </body>
 </html>
